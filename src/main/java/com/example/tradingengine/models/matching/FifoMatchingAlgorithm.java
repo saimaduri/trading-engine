@@ -1,4 +1,4 @@
-package com.example.tradingengine.models.orderbook.algorithm;
+package com.example.tradingengine.models.matching;
 
 public class FifoMatchingAlgorithm {
 
