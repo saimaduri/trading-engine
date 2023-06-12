@@ -1,7 +1,15 @@
 package com.example.tradingengine.models.orderbook;
 
-public interface MatchingOrderbook {
+import com.example.tradingengine.models.matching.MatchingAlgorithm;
 
-    public MatchResult match();
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public abstract class MatchingOrderbook implements OrderEntryOrderbook {
+
+    private final MatchingAlgorithm matchingAlgorithm;
+    private final RetrievalOrderbook retrievalOrderbook;
+
+    public abstract MatchResult match();
 
 }
