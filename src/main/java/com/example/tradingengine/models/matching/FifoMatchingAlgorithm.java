@@ -19,21 +19,28 @@ public class FifoMatchingAlgorithm implements MatchingAlgorithm {
             return matchResult;
         }
 
-        OrderbookEntry bidOrderToMatch = bids.get(0);
-        OrderbookEntry askOrderToMatch = bids.get(0);
+        int bidOrderToMatchIndex = 0;
+        int askOrderToMatchIndex = 0;
 
-        while (bidOrderToMatch != null && askOrderToMatch != null
-                && bidOrderToMatch.currentOrder.price <= askOrderToMatch.currentOrder.price) {
+        while (bidOrderToMatchIndex < bids.size() && askOrderToMatchIndex < asks.size()) {
+
+            OrderbookEntry bidOrderToMatch = bids.get(bidOrderToMatchIndex);
+            OrderbookEntry askOrderToMatch = asks.get(askOrderToMatchIndex);
+
+            if (bidOrderToMatch.currentOrder.price < askOrderToMatch.currentOrder.price) {
+                break;
+            }
+
             long currentBidQuantity = bidOrderToMatch.currentOrder.currentQuantity;
-            long currentAskQuantity = bidOrderToMatch.currentOrder.currentQuantity;
+            long currentAskQuantity = askOrderToMatch.currentOrder.currentQuantity;
 
             if (currentBidQuantity == 0) {
-                bidOrderToMatch = bidOrderToMatch.next;
+                bidOrderToMatchIndex++;
                 continue;
             }
 
             if (currentAskQuantity == 0) {
-                askOrderToMatch = askOrderToMatch.next;
+                askOrderToMatchIndex++;
                 continue;
             }
 
@@ -48,12 +55,13 @@ public class FifoMatchingAlgorithm implements MatchingAlgorithm {
             matchResult.addTradeResult(tradeResult);
 
             if (tradeResult.buyFill.isCompleteFill()) {
-                bidOrderToMatch = bidOrderToMatch.next;
+                bidOrderToMatchIndex++;
             }
 
             if (tradeResult.sellFill.isCompleteFill()) {
-                askOrderToMatch = askOrderToMatch.next;
+                askOrderToMatchIndex++;
             }
+
         }
 
         return matchResult;

@@ -7,6 +7,9 @@ import com.example.tradingengine.models.fills.Fill;
 import com.example.tradingengine.models.trades.Trade;
 import com.example.tradingengine.models.trades.TradeResult;
 
+import lombok.Getter;
+
+@Getter
 public class MatchResult {
 
     private final List<Fill> fills = new ArrayList<Fill>();
@@ -25,4 +28,5 @@ public class MatchResult {
     private void addTrade(Trade trade) {
         trades.add(trade);
     }
+
 }

@@ -29,7 +29,8 @@ public class Order extends OrderCore {
 
     public void decreaseQuantity(long quantityDelta) {
         if (currentQuantity < quantityDelta) {
-            throw new IllegalStateException(String.format("Quantity Delta > Current Quantity for Order #%d", orderId));
+            throw new IllegalStateException(String.format("Quantity Delta (%d) > Current Quantity (%d) for Order #%d",
+                    quantityDelta, currentQuantity, orderId));
         }
         currentQuantity -= quantityDelta;
     }
