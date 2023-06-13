@@ -1,14 +1,16 @@
 package com.example.tradingengine.models.orderbook;
 
+import com.example.tradingengine.models.instrument.Security;
 import com.example.tradingengine.models.matching.MatchingAlgorithm;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
-public abstract class MatchingOrderbook implements OrderEntryOrderbook {
+public abstract class MatchingOrderbook extends Orderbook {
 
     private final MatchingAlgorithm matchingAlgorithm;
-    private final RetrievalOrderbook retrievalOrderbook;
+
+    public MatchingOrderbook(Security security, MatchingAlgorithm matchingAlgorithm) {
+        super(security);
+        this.matchingAlgorithm = matchingAlgorithm;
+    }
 
     public abstract MatchResult match();
 
