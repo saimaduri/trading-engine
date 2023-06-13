@@ -1,7 +1,20 @@
 package com.example.tradingengine.models.orderbook;
 
-public interface MatchingOrderbook {
+import com.example.tradingengine.models.instrument.Security;
+import com.example.tradingengine.models.matching.MatchingAlgorithm;
 
-    public MatchResult match();
+import lombok.Getter;
+
+@Getter
+public abstract class MatchingOrderbook extends Orderbook {
+
+    protected final MatchingAlgorithm matchingAlgorithm;
+
+    public MatchingOrderbook(Security security, MatchingAlgorithm matchingAlgorithm) {
+        super(security);
+        this.matchingAlgorithm = matchingAlgorithm;
+    }
+
+    public abstract MatchResult match();
 
 }

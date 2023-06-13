@@ -12,4 +12,6 @@ public interface OrderEntryOrderbook extends ReadOnlyOrderbook {
 
     public void removeOrder(CancelOrder cancelOrder);
 
+    public int getCount();
+
 }
