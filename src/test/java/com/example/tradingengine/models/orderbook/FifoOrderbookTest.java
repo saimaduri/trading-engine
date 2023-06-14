@@ -12,7 +12,7 @@ public class FifoOrderbookTest {
 
     @Test
     public void testMatchTwoOrdersCompleteFill() {
-        MatchingOrderbook orderbook = new FifoOrderbook(new Security());
+        MatchingOrderbook orderbook = new FifoOrderbook(new Security(0, "AAPL"));
 
         long askOrderId = 0;
         long bidOrderId = 1;
@@ -33,7 +33,7 @@ public class FifoOrderbookTest {
 
     @Test
     public void testMatchTwoOrdersPartialFill() {
-        MatchingOrderbook orderbook = new FifoOrderbook(new Security());
+        MatchingOrderbook orderbook = new FifoOrderbook(new Security(0, "AAPL"));
 
         long askOrderId = 0;
         long bidOrderId = 1;
@@ -54,7 +54,7 @@ public class FifoOrderbookTest {
 
     @Test
     public void testMatchThreeOrdersCompleteFill() {
-        MatchingOrderbook orderbook = new FifoOrderbook(new Security());
+        MatchingOrderbook orderbook = new FifoOrderbook(new Security(0, "AAPL"));
 
         long askOrderId1 = 0;
         long askOrderId2 = 1;
@@ -79,7 +79,7 @@ public class FifoOrderbookTest {
 
     @Test
     public void testMatchThreeOrdersPartialFillAskRemaining() {
-        MatchingOrderbook orderbook = new FifoOrderbook(new Security());
+        MatchingOrderbook orderbook = new FifoOrderbook(new Security(0, "AAPL"));
 
         long askOrderId1 = 0;
         long askOrderId2 = 1;
@@ -104,7 +104,7 @@ public class FifoOrderbookTest {
 
     @Test
     public void testMatchThreeOrdersPartialFillBidRemaining() {
-        MatchingOrderbook orderbook = new FifoOrderbook(new Security());
+        MatchingOrderbook orderbook = new FifoOrderbook(new Security(0, "AAPL"));
 
         long askOrderId1 = 0;
         long askOrderId2 = 1;
@@ -129,7 +129,7 @@ public class FifoOrderbookTest {
 
     @Test
     public void testMatchFourOrdersCompleteFill() {
-        MatchingOrderbook orderbook = new FifoOrderbook(new Security());
+        MatchingOrderbook orderbook = new FifoOrderbook(new Security(0, "AAPL"));
 
         long askOrderId1 = 0;
         long askOrderId2 = 1;
@@ -158,7 +158,7 @@ public class FifoOrderbookTest {
 
     @Test
     public void testMatchFourOrdersCompleteFillDifferentPrice() {
-        MatchingOrderbook orderbook = new FifoOrderbook(new Security());
+        MatchingOrderbook orderbook = new FifoOrderbook(new Security(0, "AAPL"));
 
         long askOrderId1 = 0;
         long askOrderId2 = 1;
@@ -168,7 +168,7 @@ public class FifoOrderbookTest {
         Order askOrder1 = new Order(new OrderCore(askOrderId1, "TestUser", 0), 10, 20, false);
         Order askOrder2 = new Order(new OrderCore(askOrderId2, "TestUser", 0), 10, 10, false);
         Order bidOrder1 = new Order(new OrderCore(bidOrderId1, "TestUser", 0), 10, 15, true);
-        Order bidOrder2 = new Order(new OrderCore(bidOrderId1, "TestUser", 0), 11, 15, true);
+        Order bidOrder2 = new Order(new OrderCore(bidOrderId2, "TestUser", 0), 11, 15, true);
 
         orderbook.addOrder(askOrder1);
         orderbook.addOrder(askOrder2);
