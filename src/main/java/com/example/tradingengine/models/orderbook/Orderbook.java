@@ -1,11 +1,9 @@
 package com.example.tradingengine.models.orderbook;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
 import java.util.TreeMap;
 
 import com.example.tradingengine.models.instrument.Security;
@@ -16,8 +14,6 @@ import com.example.tradingengine.models.orders.Limit;
 import com.example.tradingengine.models.orders.ModifyOrder;
 import com.example.tradingengine.models.orders.Order;
 import com.example.tradingengine.models.orders.OrderbookEntry;
-
-import io.micrometer.common.lang.Nullable;
 
 public class Orderbook implements RetrievalOrderbook {
 
@@ -35,6 +31,16 @@ public class Orderbook implements RetrievalOrderbook {
 
         addOrder(order, order.price, order.isBuySide ? bidLimits : askLimits, orders);
 
+    }
+
+    @Override
+    public void changeOrder(ModifyOrder modifyOrder) {
+        if (orders.containsKey(modifyOrder.orderId)) {
+            OrderbookEntry obe = orders.get(modifyOrder.orderId);
+            removeOrder(modifyOrder.toCancelOrder());
+            addOrder(modifyOrder.toNewOrder(), obe.parentLimit.price, modifyOrder.isBuySide ? bidLimits : askLimits,
+                    orders);
+        }
     }
 
     private static void addOrder(Order order, Long price, Map<Long, Limit> limitLevels,
@@ -60,16 +66,6 @@ public class Orderbook implements RetrievalOrderbook {
             }
         }
         internalBook.put(order.orderId, orderbookEntry);
-    }
-
-    @Override
-    public void changeOrder(ModifyOrder modifyOrder) {
-        if (orders.containsKey(modifyOrder.orderId)) {
-            OrderbookEntry obe = orders.get(modifyOrder.orderId);
-            removeOrder(modifyOrder.toCancelOrder());
-            addOrder(modifyOrder.toNewOrder(), obe.parentLimit.price, modifyOrder.isBuySide ? bidLimits : askLimits,
-                    orders);
-        }
     }
 
     @Override
