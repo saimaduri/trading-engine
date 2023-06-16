@@ -8,6 +8,6 @@ public interface RetrievalOrderbook extends OrderEntryOrderbook {
 
     List<OrderbookEntry> getAskOrders();
 
-    List<OrderbookEntry> getBuyOrders();
+    List<OrderbookEntry> getBidOrders();
 
 }

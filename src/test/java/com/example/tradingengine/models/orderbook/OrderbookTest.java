@@ -60,7 +60,7 @@ public class OrderbookTest {
         final int modifyOrderQuantity = 5;
         Orderbook ob = new Orderbook(null);
         ob.addOrder(new Order(new OrderCore(orderId, "TestUser", 1), 1, 10, true));
-        assertEquals(1, ob.getBuyOrders().size());
+        assertEquals(1, ob.getBidOrders().size());
         ob.changeOrder(new ModifyOrder(new OrderCore(orderId, "TestUser", 1), 1, modifyOrderQuantity, true));
 
         int actual = ob.getCount();
@@ -68,7 +68,7 @@ public class OrderbookTest {
 
         assertEquals(expected, actual);
 
-        List<OrderbookEntry> buyOrders = ob.getBuyOrders();
+        List<OrderbookEntry> buyOrders = ob.getBidOrders();
         assertEquals(1, buyOrders.size());
         assertEquals(modifyOrderQuantity, buyOrders.get(0).currentOrder.currentQuantity);
     }

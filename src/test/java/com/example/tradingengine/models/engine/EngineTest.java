@@ -6,12 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.junit.jupiter.api.Test;
 
 import com.example.tradingengine.models.fills.FillAllocationAlgorithm;
 import com.example.tradingengine.models.instrument.Security;
 import com.example.tradingengine.models.orderbook.MatchResult;
+import com.example.tradingengine.models.orderbook.MatchingOrderbook;
 import com.example.tradingengine.models.orders.Order;
 import com.example.tradingengine.models.orders.OrderCore;
 
@@ -101,6 +103,86 @@ public class EngineTest {
         MatchResult matchResult4 = engine.process(bidOrder2);
         assertEquals(1, matchResult4.getTrades().size());
 
+    }
+
+    private static final int MAX_PRICE = 100;
+    private static final int MAX_QUANTITY = 1000;
+    private static final int SECURITY_COUNT = 50;
+
+    public static long randomPrice() {
+        return Double.valueOf(Math.random() * MAX_PRICE).longValue();
+    }
+
+    public static int randomQuantity() {
+        return Double.valueOf(Math.random() * MAX_QUANTITY).intValue();
+    }
+
+    public static boolean isBuySide() {
+        return Math.random() >= 0.5;
+    }
+
+    public static void stress() {
+
+        List<Security> supportedSecurities = new ArrayList<>();
+
+        for (int i = 0; i < SECURITY_COUNT; i++) {
+            supportedSecurities.add(new Security(i, null));
+        }
+
+        Engine engine = new Engine(supportedSecurities, FillAllocationAlgorithm.FIFO);
+        long startTime = System.currentTimeMillis();
+        int ITERATIONS = 1000000;
+        System.out.println("Running for " + ITERATIONS + " iterations...");
+
+        for (int i = 0; i < ITERATIONS; i++) {
+
+            if (isBuySide()) {
+                long price = randomPrice();
+                int quantity = randomQuantity();
+
+                engine.processAsync(
+                        new Order(new OrderCore(i, "TestUser", (int) (Math.random() * supportedSecurities.size())),
+                                price, quantity, true));
+            } else {
+                long price = randomPrice();
+                int quantity = randomQuantity();
+                engine.processAsync(
+                        new Order(new OrderCore(i, "TestUser", (int) (Math.random() * supportedSecurities.size())),
+                                price, quantity, false));
+            }
+
+        }
+
+        System.out.println("Submitted " + ITERATIONS + " orders to the engine.");
+
+        System.out.println("Waiting for the engine to finish processing all the orders...");
+
+        engine.stop();
+
+        System.out.println("Finished processing all the orders.");
+
+        long endTime = System.currentTimeMillis();
+
+        long elapsedTimeMillis = endTime - startTime;
+        long elapsedTimeMicros = elapsedTimeMillis * 1000;
+
+        System.out.println(((double) elapsedTimeMicros) / ITERATIONS + " us on average.");
+
+        int remainingAskOrderCount = 0;
+        int remainingBidOrderCount = 0;
+
+        for (int i = 0; i < SECURITY_COUNT; i++) {
+            remainingAskOrderCount += engine.getOrderbook(i).getAskOrders().size();
+            remainingBidOrderCount += engine.getOrderbook(i).getBidOrders().size();
+        }
+
+        System.out.println(remainingAskOrderCount + " ask orders remaining, "
+                + remainingBidOrderCount + " bid orders remaining.");
+
+    }
+
+    public static void main(String[] args) {
+        stress();
     }
 
 }
