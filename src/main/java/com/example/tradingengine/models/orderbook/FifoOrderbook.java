@@ -17,7 +17,7 @@ public class FifoOrderbook extends MatchingOrderbook {
     @Override
     public MatchResult match() {
 
-        MatchResult matchResult = matchingAlgorithm.Match(getBuyOrders(), getAskOrders());
+        MatchResult matchResult = matchingAlgorithm.Match(getBidOrders(), getAskOrders());
 
         List<Fill> filledOrders = matchResult.getFills().stream().filter(fill -> fill.isCompleteFill)
                 .collect(Collectors.toList());

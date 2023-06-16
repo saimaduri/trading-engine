@@ -141,20 +141,20 @@ public class Orderbook implements RetrievalOrderbook {
     }
 
     @Override
-    public List<OrderbookEntry> getBuyOrders() {
-        List<OrderbookEntry> buyOrders = new ArrayList<>();
+    public List<OrderbookEntry> getBidOrders() {
+        List<OrderbookEntry> bidOrders = new ArrayList<>();
         for (Limit bidLimit : bidLimits.values()) {
             if (bidLimit.isEmpty()) {
                 continue;
             } else {
                 OrderbookEntry obePtr = bidLimit.head;
                 while (obePtr != null) {
-                    buyOrders.add(obePtr);
+                    bidOrders.add(obePtr);
                     obePtr = obePtr.next;
                 }
             }
         }
-        return buyOrders;
+        return bidOrders;
     }
 
 }
