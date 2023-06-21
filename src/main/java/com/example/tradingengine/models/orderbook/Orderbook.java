@@ -28,9 +28,7 @@ public class Orderbook implements RetrievalOrderbook {
 
     @Override
     public void addOrder(Order order) {
-
         addOrder(order, order.price, order.isBuySide ? bidLimits : askLimits, orders);
-
     }
 
     @Override

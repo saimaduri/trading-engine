@@ -3,11 +3,11 @@ package com.example.tradingengine.models.engine;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.example.tradingengine.models.fills.FillAllocationAlgorithm;
 import com.example.tradingengine.models.instrument.Security;
@@ -18,16 +18,17 @@ import com.example.tradingengine.models.orders.CancelOrder;
 import com.example.tradingengine.models.orders.ModifyOrder;
 import com.example.tradingengine.models.orders.Order;
 
+@ConfigurationProperties(prefix = "com.example")
 public class Engine {
 
     private Map<Integer, MatchingOrderbook> orderbooks;
     private Map<Integer, ExecutorService> workers;
 
-    public Engine(List<Security> securities, FillAllocationAlgorithm fillAllocationAlgorithm) {
+    public Engine(List<Security> supportedSecurities, FillAllocationAlgorithm fillAllocationAlgorithm) {
         orderbooks = new HashMap<>();
         workers = new HashMap<>();
 
-        for (Security security : securities) {
+        for (Security security : supportedSecurities) {
             orderbooks.put(security.securityId, OrderbookFactory.createOrderbook(security, fillAllocationAlgorithm));
             workers.put(security.securityId, Executors.newSingleThreadExecutor());
         }

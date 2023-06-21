@@ -108,16 +108,17 @@ public class EngineTest {
     private static final int MAX_PRICE = 100;
     private static final int MAX_QUANTITY = 1000;
     private static final int SECURITY_COUNT = 50;
+    private static final int ORDER_COUNT = 1000000;
 
-    public static long randomPrice() {
+    private static long randomPrice() {
         return Double.valueOf(Math.random() * MAX_PRICE).longValue();
     }
 
-    public static int randomQuantity() {
+    private static int randomQuantity() {
         return Double.valueOf(Math.random() * MAX_QUANTITY).intValue();
     }
 
-    public static boolean isBuySide() {
+    private static boolean isBuySide() {
         return Math.random() >= 0.5;
     }
 
@@ -131,10 +132,9 @@ public class EngineTest {
 
         Engine engine = new Engine(supportedSecurities, FillAllocationAlgorithm.FIFO);
         long startTime = System.currentTimeMillis();
-        int ITERATIONS = 1000000;
-        System.out.println("Running for " + ITERATIONS + " iterations...");
+        System.out.println("Running for " + ORDER_COUNT + " iterations...");
 
-        for (int i = 0; i < ITERATIONS; i++) {
+        for (int i = 0; i < ORDER_COUNT; i++) {
 
             if (isBuySide()) {
                 long price = randomPrice();
@@ -153,7 +153,7 @@ public class EngineTest {
 
         }
 
-        System.out.println("Submitted " + ITERATIONS + " orders to the engine.");
+        System.out.println("Submitted " + ORDER_COUNT + " orders to the engine.");
 
         System.out.println("Waiting for the engine to finish processing all the orders...");
 
@@ -166,7 +166,7 @@ public class EngineTest {
         long elapsedTimeMillis = endTime - startTime;
         long elapsedTimeMicros = elapsedTimeMillis * 1000;
 
-        System.out.println(((double) elapsedTimeMicros) / ITERATIONS + " us on average.");
+        System.out.println(((double) elapsedTimeMicros) / ORDER_COUNT + " us on average.");
 
         int remainingAskOrderCount = 0;
         int remainingBidOrderCount = 0;

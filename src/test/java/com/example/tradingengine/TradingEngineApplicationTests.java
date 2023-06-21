@@ -1,13 +1,10 @@
 package com.example.tradingengine;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class TradingEngineApplicationTests {
+import com.example.tradingengine.controllers.Exchange;
 
-	@Test
-	void contextLoads() {
-	}
+@SpringBootTest(classes = Exchange.class)
+class TradingEngineApplicationTests {
 
 }

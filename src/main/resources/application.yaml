@@ -1,0 +1,14 @@
+com:
+  example:
+    fillAllocationAlgorithm: FIFO
+    supportedSecurities:
+      -
+        securityId: 0
+        symbol: AAPL
+      - 
+        securityId: 1
+        symbol: GOOG
+      - 
+        securityId: 2
+        symbol: MSFT
+    
